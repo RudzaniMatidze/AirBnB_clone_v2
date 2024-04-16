@@ -2,24 +2,24 @@
 """
 Module for console
 """
-import cmd
-import re
 import shlex
+import cmd
 import ast
+import re
 from models import storage
 from models.base_model import BaseModel
-from models.user import User
 from models.amenity import Amenity
+from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-from models.city import City
+from models.user import User
 
 
 
 def split_curly_braces(e_arg):
     """
-    Splits the curly braces for the update method
+    Splits curly braces for the update method
     """
     curly_braces = re.search(r"\{(.*?)\}", e_arg)
 
