@@ -1,19 +1,19 @@
 #!/usr/bin/python3
-"""A script that defines unittests for console.py."""
+"""Script defines unittests for console.py."""
 import os
 import unittest
-from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
+from unittest.mock import patch
 from models.engine.file_storage import FileStorage
 
 
 class TestHBNBCommand(unittest.TestCase):
-    """ Unittests for testing the HBNB command interpreter."""
+    """Unittest for testing the HBNB command interpreter."""
 
     @classmethod
     def setUpClass(cls):
-        """ HBNBCommand testing setup.
+        """HBNBCommand testing setup.
 
         Temporarily rename any existing file.json.
         Reset FileStorage objects dictionary.
@@ -32,8 +32,8 @@ class TestHBNBCommand(unittest.TestCase):
     def tearDownClass(cls):
         """HBNBCommand testing teardown.
 
-        Restore original file.json.
-        Delete the test HBNBCommand instance.
+        Restores original file.json.
+        Deletes the test HBNBCommand instance.
         """
         try:
             os.rename("tmp", "file.json")
@@ -42,66 +42,66 @@ class TestHBNBCommand(unittest.TestCase):
         del cls.HBNB
 
     def setUp(self):
-        """Reset FileStorage objects dictionary."""
+        """Resets FileStorage objects dictionary."""
         FileStorage._FileStorage__objects = {}
 
     def tearDown(self):
-        """Delete any created file.json."""
+        """Deletes any created file.json."""
         try:
             os.remove("file.json")
         except IOError:
             pass
 
     def test_create_for_errors(self):
-        """Test create command errors."""
-        # Test if class name is missing
+        """Tests create command errors."""
+        # Tests if class name is missing
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create")
             self.assertEqual(
                 "** class name missing **\n", f.getvalue())
-        # Test if class doesn't exist
+        # Tests if class doesn't exist
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create asdfsfsd")
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
 
     def test_create_command_validity(self):
-        """Test create command."""
-        # Create BaseModel instance and capture its ID
+        """Tests create command."""
+        # Creates BaseModel instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create BaseModel")
             bm = f.getvalue().strip()
 
-        # Create User instance and capture its ID
+        # Creates User instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create User")
             us = f.getvalue().strip()
 
-        # Create State instance and capture its ID
+        # Creates State instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create State")
             st = f.getvalue().strip()
 
-        # Create Place instance and capture its ID
+        # Creates Place instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create Place")
             pl = f.getvalue().strip()
 
-        # Create City instance and capture its ID
+        # Creates City instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create City")
             ct = f.getvalue().strip()
 
-        # Create Review instance and capture its ID
+        # Creates Review instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create Review")
             rv = f.getvalue().strip()
 
-        # Create Amenity instance and capture its ID
+        # Creates Amenity instance and capture its ID
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create Amenity")
             am = f.getvalue().strip()
-        # Test if the created instances are in the output of "all" command
+        # Tests if the created instances are in the output of "all" command
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("all BaseModel")
             self.assertIn(bm, f.getvalue())
