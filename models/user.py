@@ -5,10 +5,20 @@ from sqlalchemy import Column, String
 
 
 class User(BaseModel):
-    """This class defines a user by various attributes"""
-    __tablename__ = 'users'
+    """This class defines a user by various attributes
 
+    Attr:
+        __tablename__ (str): represents the table name, reviews
+         email: (sqlalchemy String): represents a column containing a string
+         password (sqlalchemy String): represents a column containing a string
+         first_name (sqlalchemy String): represents a column containing a string
+         last_name (sqlalchemy String): 
+    """
+
+    __tablename__ = 'users'
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
     last_name = Column(String(128))
+    places = relationship("Place", backref="user", cascade="delete")
+    reviews = relationship("Review", backref="user", cascade="delete")
