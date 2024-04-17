@@ -1,91 +1,109 @@
 #!/usr/bin/python3
-""" 
-Handle a the details of how to connect to the SQL database and execute commands
-"""
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scope_session, sessionmaker, Session
-from sqlalchemy.exc import InvalidRequestError
-from models.base_model import Base, BaseModel
-from models.amenity import Amenity
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import BaseModel, Base
 from models.city import City
+from models.amenity import Amenity
 from models.place import Place
-from models.user import User
-from models.state import State
 from models.review import Review
+from models.state import State
+from models.user import User
+
 
 class DBStorage:
-    """
-     DBStorage class for managing database storage using SQLAlchemy.
-    """
     __engine = None
     __session = None
-    def __init__(self) -> None:
-        """
-        Initializes the DBStorage instance by creating the engine and session.
-        """
-        username = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST")
-        database_name = getenv("HBNB_MYSQL_DB")
-        database_url = "mysql+mysqldb://{}:{}@{}/{}".format(username,
-                                                            password,
-                                                            host,
-                                                            databse_name)
-        self.__engine = create_engine(database_url, pool_pre_ping=True)
 
-        if getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
+    def __init__(self):
+        # create the engine
+        hbnb_dev = getenv('HBNB_MYSQL_USE')
+        hbnb_dev_pwd = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        hbnb_dev_db = getenv('HBNB_MYSQL_DB')
+        db_url = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
+            hbnb_dev, hbnb_dev_pwd, host, hbnb_dev_db)
+        self.__engine = create_engine(db_url, pool_pre_ping=True)
 
-    def all(self, cls=None):
-        """
-        Queries objects from the database based on class name.
-        Returns a dictionary with object IDs as keys and objects as values.
-        """
-        obj_list = []
-        if cls:
-            if isinstance(cls, str):
-                try:
-                    cls = globals()[cls]
-                except KeyError:
-                    pass
-                if issubclass(cls, Base):
-                    obj_list = self.__session.query(cls).all()
-                else:
-                    for subclass in Base.__subclasses__():
-                        objs_list.extend(self.__session.query(subclass).all())
-                obj_dict = {}
-                for obj in objs_list:
-                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    obj_dict[key] = obj
-                return obj_dict
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(bind=self.__engine)
 
-        def new(self, obj):
-            """
-            Adds the object to the current database session.
-            """
-            self.__session.ass(obj)
-            self.__session.commit()
 
-        def save(self):
-            """
-            Commits all changes to the current database session.
-            """
-            self.__session.commit()
+def all(self, cls=None):
 
-        def delete(self, obj=None):
-            """
-            Deletes the object from the current database session.
-            """
-            if obj:
-                self.__session.delete(obj)
+    if cls:
+        objs = self.__session.query(self.classes()[cls]).all()
 
-        def reload(self):
-            """
-            Reloads the database session and recreates tables.
-            """
-            Base.metadata.drop_all(self.__engine)
-            Base.metadata.create_all(self.__engine)
-            session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-            Session = scoped_session(session_factory)
-            self.__session = Session()
+    else:
+        objs = self.__session.query(State).all()
+        objs += self.__session.query(City).all()
+        objs += self.__session.query(User).all()
+        objs += self.__session.query(Place).all()
+        objs += self.__session.query(Amenity).all()
+        objs += self.__session.query(Review).all()
+
+        my_dict = {}
+        for obj in objs:
+            k = '{}.{}'.format(type(obj).__name__, obj.id)
+            my_dict[k] = obj
+        return my_dict
+
+
+def new(self, obj):
+    """ Add the object to the current
+       database session (self.__session)
+    """
+    self.__session.add(obj)
+
+
+def save(self):
+    """ Commit all changes of the current
+       database session (self.__session)
+    """
+    self.__session.commit()
+
+
+def delete(self, obj=None):
+    """ Delete from the current database
+    session obj if not None
+    """
+    if obj:
+        self.__session.delete(obj)
+
+
+def reload(self):
+    """ Create the current database session (self.__session) from
+    the engine (self.__engine) by using a sessionmaker
+    """
+    from models.user import User
+    from models.state import State
+    from models.city import City
+    from models.amenity import Amenity
+    from models.place import Place
+    from models.review import Review
+
+    Base.metadata.create_all(self.__engine)
+    self.__session = sessionmaker(bind=self.__engine,
+                                  expire_on_commit=False)
+    Session = scoped_session(self.__session)
+    self.__session = Session()
+
+
+def classes(self):
+    """ Returns a dictionary of valid classes and their references."""
+    from models.base_model import BaseModel
+    from models.user import User
+    from models.state import State
+    from models.city import City
+    from models.amenity import Amenity
+    from models.place import Place
+    from models.review import Review
+
+    classes = {"BaseModel": BaseModel,
+               "User": User,
+               "State": State,
+               "City": City,
+               "Amenity": Amenity,
+               "Place": Place,
+               "Review": Review}
+    return classes
