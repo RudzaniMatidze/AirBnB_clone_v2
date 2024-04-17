@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-""" Defines unittests for console.py. """
+"""Defines unittests for console.py."""
 import os
 import pep8
-import unittest
 import models
+import unittest
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
@@ -16,7 +16,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """ HBNBCommand testing setup.
+        """HBNBCommand testing setup.
 
         Temporarily rename any existing file.json.
         Reset FileStorage objects dictionary.
@@ -30,7 +30,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """ HBNBCommand testing teardown.
+        """HBNBCommand testing teardown.
 
         Restore original file.json.
         Delete the test HBNBCommand instance.
@@ -44,24 +44,24 @@ class TestHBNBCommand(unittest.TestCase):
             models.storage._DBStorage__session.close()
 
     def setUp(self):
-        """ Reset FileStorage objects dictionary."""
+        """Reset FileStorage objects dictionary."""
         FileStorage._FileStorage__objects = {}
 
     def tearDown(self):
-        """ Delete any created file.json."""
+        """Delete any created file.json."""
         try:
             os.remove("file.json")
         except IOError:
             pass
 
     def test_pep8(self):
-        """ Test Pep8 styling."""
+        """Test Pep8 styling."""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(["console.py"])
         self.assertEqual(p.total_errors, 0, "fix Pep8")
 
     def test_docstrings(self):
-        """ Check for docstrings."""
+        """Check for docstrings."""
         self.assertIsNotNone(HBNBCommand.__doc__)
         self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
         self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
@@ -76,24 +76,24 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.default.__doc__)
 
     def test_emptyline(self):
-        """ Test empty line input."""
+        """Test empty line input."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("\n")
             self.assertEqual("", f.getvalue())
 
     def test_quit(self):
-        """ Test quit command input."""
+        """Test quit command input."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("quit")
             self.assertEqual("", f.getvalue())
 
     def test_EOF(self):
-        """ Test that EOF quits."""
+        """Test that EOF quits."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertTrue(self.HBNB.onecmd("EOF"))
 
     def test_create_errors(self):
-        """ Test create command errors."""
+        """Test create command errors."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create")
             self.assertEqual(
@@ -105,7 +105,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_create(self):
-        """ Test create command."""
+        """Test create command."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("create BaseModel")
             bm = f.getvalue().strip()
@@ -151,7 +151,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_create_kwargs(self):
-        """ Test create command with kwargs."""
+        """Test create command with kwargs."""
         with patch("sys.stdout", new=StringIO()) as f:
             call = ('create Place city_id="0001" name="My_house" '
                     'number_rooms=4 latitude=37.77 longitude=a')
@@ -168,7 +168,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertNotIn("'longitude'", output)
 
     def test_show(self):
-        """ Test show command."""
+        """Test show command."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("show")
             self.assertEqual(
@@ -187,7 +187,7 @@ class TestHBNBCommand(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_destroy(self):
-        """ Test destroy command input."""
+        """Test destroy command input."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("destroy")
             self.assertEqual(
@@ -207,7 +207,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_all(self):
-        """ Test all command input."""
+        """Test all command input."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.HBNB.onecmd("all asdfsdfsd")
             self.assertEqual("** class doesn't exist **\n", f.getvalue())
@@ -217,7 +217,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_update(self):
-        """ Test update command input."""
+        """Test update command input."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("update")
             self.assertEqual(
@@ -249,7 +249,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_z_all(self):
-        """ Test alternate all command."""
+        """Test alternate all command."""
         with patch("sys.stdout", new=StringIO()) as f:
             self.HBNB.onecmd("asdfsdfsd.all()")
             self.assertEqual(
@@ -260,7 +260,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_z_count(self):
-        """ Test count command inpout"""
+        """Test count command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.HBNB.onecmd("asdfsdfsd.count()")
             self.assertEqual(
@@ -270,7 +270,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual("0\n", f.getvalue())
 
     def test_z_show(self):
-        """ Test alternate show command inpout"""
+        """Test alternate show command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.HBNB.onecmd("safdsa.show()")
             self.assertEqual(
@@ -281,7 +281,7 @@ class TestHBNBCommand(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_destroy(self):
-        """ Test alternate destroy command inpout"""
+        """Test alternate destroy command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.HBNB.onecmd("Galaxy.destroy()")
             self.assertEqual(
@@ -293,7 +293,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == DBStorage, "Testing DBStorage")
     def test_update(self):
-        """ Test alternate destroy command inpout"""
+        """Test alternate destroy command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.HBNB.onecmd("sldkfjsl.update()")
             self.assertEqual(
