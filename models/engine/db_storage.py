@@ -1,13 +1,13 @@
 #!/usr/bin/python3
-"""Database storage engine using SQLAlchemy with a mysql+mysqldb database
+""" Database storage engine using SQLAlchemy with a mysql+mysqldb database
 connection.
 """
 
 import os
 from models.base_model import Base
 from models.amenity import Amenity
-from models.city import City
 from models.place import Place
+from models.city import City
 from models.state import State
 from models.review import Review
 from models.user import User
@@ -40,7 +40,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary of all the objects present"""
+        """Returns a dictionary of all the objects present"""
         if not self.__session:
             self.reload()
         objects = {}
@@ -56,22 +56,22 @@ class DBStorage:
         return objects
 
     def reload(self):
-        """reloads objects from the database"""
+        """Reloads objects from the database"""
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(session_factory)
 
     def new(self, obj):
-        """creates a new object"""
+        """Creates a new object"""
         self.__session.add(obj)
 
     def save(self):
-        """saves the current session"""
+        """Saves the current session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletes an object"""
+        """Deletes an object"""
         if not self.__session:
             self.reload()
         if obj:
