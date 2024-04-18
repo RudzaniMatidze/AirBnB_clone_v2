@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ Console Module """
-import cmd
 import sys
 import re
 import os
-from datetime import datetime
 import uuid
+import cmd
+from datetime import datetime
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
