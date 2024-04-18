@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-""" """
+"""Tests for review """
+import os
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
-import os
 
 
 class test_review(test_basemodel):
