@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """ Defines the FileStorage class."""
 import json
-from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from models.base_models import BaseModel
 
 
 class FileStorage:
@@ -21,7 +21,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """ Return a dictionary of instantiated objects in __objects.
+        """Return a dictionary of instantiated objects in __objects.
         If a cls is specified, returns a dictionary of objects of that type.
         Otherwise, returns the __objects dictionary.
         """
