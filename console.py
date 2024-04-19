@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ Console Module """
-import os
-import re
 import cmd
 import sys
-import uuid
+import re
+import os
 from datetime import datetime
+import uuid
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -47,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
-        # scans for general formating - i.e '.', '(', ')'
+        # scan for general formating - i.e '.', '(', ')'
         if not ('.' in line and '(' in line and ')' in line):
             return line
 
@@ -286,7 +286,7 @@ class HBNBCommand(cmd.Cmd):
         """ Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
-        # isolates cls from id/args, ex: (<cls>, delim, <id/args>)
+        # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
         args = args.partition(" ")
         if args[0]:
             c_name = args[0]
@@ -297,7 +297,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        # isolates id from args
+        # isolate id from args
         args = args[2].partition(" ")
         if args[0]:
             c_id = args[0]
@@ -305,7 +305,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        # generates key from class and id
+        # generate key from class and id
         key = c_name + "." + c_id
 
         # determine if key is present
@@ -313,7 +313,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
-        # first determines if kwargs or args
+        # first determine if kwargs or args
         if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
@@ -342,10 +342,10 @@ class HBNBCommand(cmd.Cmd):
 
             args = [att_name, att_val]
 
-        # Retrieves dictionary of current objects
+        # retrieve dictionary of current objects
         new_dict = storage.all()[key]
 
-        # iterates through attr names and values
+        # iterate through attr names and values
         for i, att_name in enumerate(args):
             # block only runs on even iterations
             if (i % 2 == 0):
@@ -356,7 +356,7 @@ class HBNBCommand(cmd.Cmd):
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
-                # type cast as necessary
+                # Type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
 
