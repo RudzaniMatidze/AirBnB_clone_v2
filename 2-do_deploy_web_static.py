@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 """
-A Fabric script (based on the file 1-pack_web_static.py) that distributes 
-an archive to your web servers, using the function do_deploy
+A fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
 """
 
-from os.path import exists
 from fabric.api import put, run, env
+from os.path import exists
 env.hosts = ['18.234.107.174', '100.25.181.139']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to the web servers"""
+    """distributes an archive to the web servers"""
     if exists(archive_path) is False:
         return False
     try:
