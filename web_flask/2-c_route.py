@@ -20,7 +20,7 @@ def hbnb():
     return ("HBNB")
 
 
-@app.route("/c/c<text>", strict_slashes=False)
+@app.route("/c/<text>", strict_slashes=False)
 def cText(text):
     """ Displays C followed by the value of the text variable"""
     return "C {}".format(text.replace("_", " "))
