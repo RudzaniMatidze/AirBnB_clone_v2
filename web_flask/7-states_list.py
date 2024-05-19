@@ -14,10 +14,10 @@ def display_states():
     return render_template('7-states_lists.html', states=states)
 
 
-@app.teardown_appconteext
+@app.teardown_appcontext
 def teardown(self):
     """Method that removes current SQLAlchemy Session"""
-    storaage.close()
+    storage.close()
 
 
 if __name__ == "__main__":
