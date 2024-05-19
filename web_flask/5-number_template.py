@@ -2,7 +2,6 @@
 """
 a script that starts a Flask web application
 """
-
 from flask import Flask, render_template
 
 app = Flask("__name__")
@@ -34,7 +33,7 @@ def pythonText(text="is cool"):
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
-de isNumber(n):
+def isNumber(n):
     """Displays "n is a number" only if n is an integer"""
     if isinstance(n, int):
         return "{} is a number".format(n)
@@ -48,4 +47,4 @@ def number_template(n=None):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=None)
+   app.run()
