@@ -1,31 +1,26 @@
 #!/usr/bin/python3
-"""
-Start Flask application for HBNB project
-"""
-from flask import Flask, render_template
+"""Starts a Flask web application"""
 from models import storage
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
+from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """Display a HTML page like 8-index.html from static"""
-    states = sorted(storage.all(State).values(), key=lambda state: state.name)
-    amenities = sorted(storage.all(Amenity).values(), key=lambda amenity: amenity.name)
-    places = sorted(storage.all(Place).values(), key=lambda place: place.name)
-    return render_template('100-hbnb.html', states=states, amenities=amenities, places=places)
+@app.route("/hbnb_filters", strict_slashes=False)
+def hbnb_filters():
+    """Displays the main HBnB filters HTML page."""
+    states = storage.all("State")
+    amenities = storage.all("Amenity")
+    return render_template("10-hbnb_filters.html",
+                           states=states, amenities=amenities)
 
 
 @app.teardown_appcontext
-def teardown_db(exception):
-    """Close the storage on teardown"""
+def teardown(exc):
+    """Remove the current SQLAlchemy session."""
     storage.close()
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host="0.0.0.0", port=5000)
